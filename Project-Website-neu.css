@@ -10,7 +10,9 @@ body{
 /**/
 /* Kopf */
 .top{ 
-  width:min(1200px, 100% - 4rem); margin:2rem auto 0;
+  width:min(1200px, 100% - 4rem); 
+  margin:2rem auto 0;
+  
  }
 .title{ 
   text-align: center;
@@ -328,6 +330,6 @@ gap: 20px;
 
 .name {
   text-align: center;
-  font-size:clamp(1.8rem,3vw,5rem); font-weight:700;
-  
+  font-size:clamp(0.9rem,2vw,2rem); font-weight:700;
+  margin-top: -70px;
 }
