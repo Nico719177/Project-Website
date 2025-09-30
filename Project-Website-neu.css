@@ -7,7 +7,7 @@ body{
   font-family:Arial, Helvetica, sans-serif;
   background:linear-gradient(to bottom, rgb(184,184,174), rgb(234,228,180));
 }
-
+/**/
 /* Kopf */
 .top{ 
   width:min(1200px, 100% - 4rem); margin:2rem auto 0;
