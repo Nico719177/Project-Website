@@ -1,0 +1,368 @@
+body {
+  margin: 0;
+  height: 100%;
+  background: linear-gradient(to bottom, rgb(184, 184, 174), rgb(234, 228, 180));
+  display: grid;
+  place-items: center;
+  font-family: Arial;
+  
+}
+
+:root {
+  --mid-gray:  rgb(70, 70, 70);
+}
+
+.headline {
+  margin-top: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+  /*
+  border: 8px, solid black;
+  */
+  max-width: 70vw;
+}
+
+.layout {
+  --gap: clamp(20px, 5vw, 120px);
+  --line: 10px;
+  display: grid;
+  grid-template-columns:  auto var(--line) auto;
+  justify-content: center;
+  align-items: center;
+  
+  column-gap:  var(--gap);
+  margin-top: 50px;
+  margin-left: 1vw;
+  margin-right: 1vw;
+ 
+/*
+  border: 8px, solid black; 
+  */
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  /*
+  max-width: 1000px;
+  min-width: 400px;
+  margin-bottom: 5vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  */
+}
+
+.pic {
+  flex: 0 0 auto;
+  width: clamp(100px, 40vw, 500px);
+  height: auto;
+  display: block;
+  border-radius: 15px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.2vw;
+  }
+
+/*
+----------headline----------
+*/
+
+.title {
+  font-size: clamp(1.8rem, 10vw, 5rem);
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.profile {
+  margin-top:  1vw;
+  background-color: rgb(232, 228, 222);
+  border-radius: 20px;
+  padding: clamp(20px, 2vw, 200px);
+}
+
+/* 
+----------left side----------
+*/
+
+.side.left .text {
+  margin-left: 0.2vw;
+}
+
+.side.left .item {
+  flex-direction: row-reverse;
+  justify-items: start;
+  margin-top: 0px;
+  /*background: linear-gradient(to right, var(--c1), var(--c2)); */
+  --edge: var(--c2);
+  
+}
+
+/*
+----------right side----------
+*/
+
+.side.right .text {
+  margin-right: 0.2vw;
+}
+
+.side.right .item {
+  justify-items: end;
+  flex-direction: reverse;
+  margin-bottom: 0px;
+   /* background: linear-gradient(to left, var(--c1), var(--c2)); */
+  --edge: var(--c2); 
+  column-gap: 0.4vw;
+  
+}
+
+/*
+----------middle----------
+*/
+
+.line {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.timeline {
+  width: var(--line);
+  height:auto;
+  flex: 1;
+  background: var(--mid-gray);
+}
+
+.timeline-gradient {
+  width: 10px;
+  height: 7vw;
+  background: linear-gradient(to top, var(--mid-gray), transparent);
+}
+
+
+  /*
+  transform: translate(-50%);
+  width: 10vw;
+  height: 10px;
+  background: linear-gradient(to left, rgb(70, 70, 70), rgb(46, 46, 181));
+  */
+
+
+
+
+/*
+----------background---------
+*/
+.background-pic-text {
+  border-radius: 20px;
+  padding: 0.3vw;
+}
+
+.animation-extern {
+  --c1:rgb(212, 67, 42);
+  --c2:rgb(133, 82, 19);
+}
+
+.video-intern {
+  --c1:rgb(46, 181, 68);
+  --c2:rgb(91, 91, 193);
+}
+
+.video-extern {
+  --c1:rgb(212, 67, 42);
+  --c2:rgb(91, 91, 193);
+}
+
+.programming-intern {
+  --c1:rgb(46, 181, 68);
+  --c2:rgb(31, 118, 120);
+}
+
+.programming-extern {
+  --c1:rgb(212, 67, 42);
+  --c2:rgb(31, 118, 120);
+}
+
+
+
+/*
+--------------conection-----------
+*/
+
+.side .item::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 10px;
+   width: calc(var(--gap) + var(--line)/2);
+}
+
+.side.left .item::after {
+  right: calc(0px - (var(--gap) + var(--line)/2));
+  background: linear-gradient(to right, var(--edge), var(--mid-gray));
+  text-align: center;
+}
+
+.side.right .item::after{
+  left: calc(0px - (var(--gap) + var(--line)/2));
+  background: linear-gradient(to left,  var(--edge), var(--mid-gray));
+  text-align: center;
+}
+
+/*
+-----mobile--------
+*/
+
+@media (max-width: 900px){
+  .layout{ grid-template-columns: 1fr; column-gap: 0; }
+  .line{ display:none; }              /* mittlere Linie ausblenden */
+  .side .item::after{ display:none; } /* Verbinder ausblenden */
+}
+
+
+
+/*
+-----------Text Animation----------------
+*/
+
+
+.side { display: grid; }           
+
+.side .item { width: max-content; }
+.item { gap: 0px; }                 
+.item .text{ flex:0 0 0; width:0; max-width:0; opacity:0; overflow:hidden; }
+.item.revealed .text{ flex:0 0 clamp(180px,22vw,320px); width:auto; max-width:clamp(180px,22vw,320px); opacity:1; }
+
+.title-sheet {
+   max-block-size: 0;
+    
+  
+  
+}
+
+.item .text
+{
+  opacity: 0;
+  max-width: 0;
+  flex: 0 0 0;
+  width: 0;
+  margin: 0;
+  overflow: hidden;
+  transform: translateX(-8px);
+  transition: opacity .25s ease, max-width .25s ease, transform .25s ease;;
+}
+
+.side.right .item .text{ 
+  transform: translateX(8px); 
+}
+
+.item.revealed .text{
+  opacity: 1;
+  flex: 0 0 clamp(180px, 22vw, 320px);
+  width:auto;
+  max-width: clamp(180px, 22vw, 320px);  
+  transform: translateX(0);
+}
+
+.item.revealed .title-sheet {
+   opacity: 1;
+  max-block-size: 0.4;
+  font-size: clamp(0.2rem, 1.4vw, 5rem);
+  position: relative;
+  top: -0.7rem; 
+}
+
+.item { 
+  transition: box-shadow .25s ease, background-position .25s ease;
+  background-size: 100% 100%;
+}
+
+/*
+.item.revealed {
+  gap: -20px;
+}
+*/
+ .side .item{
+  width: max-content;   
+}
+
+.side { display: grid; }
+.side.left  { 
+  justify-items: end; 
+  margin-top: 5rem;
+  
+} 
+
+/* rechte Kante bleibt fix */
+
+
+.project-describption {
+  margin-bottom: 5rem;
+  font-weight: bold;
+  color: rgb(33, 26, 26);
+}
+
+.side.left  { justify-items: end; }   
+.side.right { justify-items: start; } 
+
+
+/* Karten-Grundlayout */
+.item{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  background:none;           /* NICHT mehr am ganzen Item */
+  width:max-content;
+}
+
+/* Bild-Wrapper: bekommt den Verlauf */
+.media{
+  display:inline-block;
+  position:relative;
+  padding:0.35rem;           /* „Rahmen“ um das Bild */
+  border-radius:20px;
+  overflow:hidden;           /* saubere Rundungen */
+}
+
+/* Richtung je Seite */
+.side.left  .media{  background:linear-gradient(to right, var(--c1), var(--c2)); }
+.side.right .media{  background:linear-gradient(to left,  var(--c1), var(--c2)); }
+
+/* Das Bild selbst */
+.pic{
+  display:block;
+  width:clamp(100px, 40vw, 500px);
+  aspect-ratio:16/9;
+  object-fit:cover;
+  border-radius:14px;
+}
+
+/* Text-Block (ohne Verlauf) */
+.text{ max-width:clamp(180px,22vw,320px); }
+
+/* Optional: Verlauf statt hinter dem Bild HINTER DEM TEXT anzeigen
+   (für Items, die du so stylen willst, einfach .bg-on-text aufs .item setzen) */
+.item.bg-on-text .media{
+  background: none;
+ } /* Bild ohne Verlauf */
+.item.bg-on-text {
+  background:linear-gradient(to right, var(--c1), var(--c2));
+  padding:0.75rem 1rem;
+  border-radius:14px;
+  color:#000; /* bei Bedarf anpassen */
+}
+
+
+

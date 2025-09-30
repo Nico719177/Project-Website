@@ -1,0 +1,324 @@
+:root{
+  --mid-gray: rgb(70,70,70);
+}
+
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(to bottom, rgb(184,184,174), rgb(234,228,180));
+}
+
+/* Kopf */
+.top{ 
+  width:min(1200px, 100% - 4rem); margin:2rem auto 0;
+ }
+.title{ 
+  text-align: center;
+  font-size:clamp(1.8rem,10vw,5rem); font-weight:700; font-family:"Courier New", Courier, monospace; 
+}
+.profile{ 
+  text-align: center;
+  margin-top:1rem; background:#e8e4de; border-radius:20px; padding:clamp(20px,2vw,200px); 
+}
+
+/* Layout: links | timeline | rechts */
+.layout{
+  --gap: clamp(20px, 5vw, 120px);
+  --line: 10px;
+
+  display:grid;
+  grid-template-columns: 1fr var(--line) 1fr;
+  column-gap: var(--gap);
+  width:min(1200px, 100% - 4rem);
+  margin: 2rem auto;
+  align-items:start;
+}
+
+.left{ 
+  display:grid; justify-items:end; 
+}
+.right{ 
+  display:grid; justify-items:start; 
+}
+
+/* Timeline Mitte */
+.middle{ display:flex; flex-direction:column; align-self:stretch; }
+.timeline{ width:var(--line); flex:1; background:var(--mid-gray);
+margin-bottom: 70px; }
+.timeline-gradient{ width:var(--line); height:7vw; background:linear-gradient(to top, var(--mid-gray), transparent); }
+
+/* ========== Karte (Bild + Text mit Verlauf) ========== */
+.project{
+  position:relative;           /* für den Connector */
+  margin-bottom:70px;
+}
+
+/* Farbthemen je Kategorie (werden am .project gesetzt) */
+.animation-extern   { --c1:rgb(212, 67, 42); --c2:rgb(133, 82, 19); }
+.video-intern       { --c1:rgb(46, 181, 68); --c2:rgb(91, 91, 193); }
+.video-extern       { --c1:rgb(212, 67, 42); --c2:rgb(91, 91, 193); }
+.programming-intern { --c1:rgb(46, 181, 68); --c2:rgb(31, 118, 120); }
+.programming-extern { --c1:rgb(212, 67, 42); --c2:rgb(31, 118, 120); }
+
+/* Die Karte selbst bekommt den Verlauf-Rahmen */
+.card{
+  display:inline-block;
+  background:linear-gradient(to right, var(--c1), var(--c2)); /* Standardrichtung */
+  padding:0.6rem 0.8rem;
+  border-radius:20px;
+}
+
+/* Richtung je Seite anpassen */
+.right .project .card{
+  background:linear-gradient(to left, var(--c1), var(--c2));
+}
+
+/* Inhalt der Karte */
+.pic{
+  display:block;
+  width:clamp(220px, 40vw, 500px);
+  aspect-ratio:16/9;
+  object-fit:cover;
+  border-radius:14px;
+}
+.project-describption{
+  margin:0.5rem 0 0;
+  font-weight:700;
+  color:#211a1a;
+}
+
+/* ========== Connector zur Timeline (mit gleichem Verlauf) ========== */
+.left  .project::after,
+.right .project::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  height:10px;
+  width:calc(var(--gap) + var(--line)/2);
+}
+
+/* Links: von Karte (rechts) zur Linie (Mitte) → Verlauf nach rechts */
+.left .project::after{
+  right: calc(0px - (var(--gap) + var(--line)/2));
+  background:linear-gradient(to right, var(--c2), var(--mid-gray));
+}
+
+/* Rechts: von Karte (links) zur Linie (Mitte) → Verlauf nach links */
+.right .project::after{
+  left: calc(0px - (var(--gap) + var(--line)/2));
+  background:linear-gradient(to left, var(--c2), var(--mid-gray));
+}
+
+/* Mobil: 1 Spalte, ohne Timeline/Connector */
+@media (max-width:900px){
+  .layout{ grid-template-columns:1fr; column-gap:0; }
+  .middle{ display:none; }
+  .left, .right{ justify-items:center; }
+  .project::after{ display:none; }
+}
+
+
+/* Bild + (optional) Overlay-Text nebeneinander – aber Text absolut! */
+.media-row{
+  position: relative;
+  overflow: visible;   /* damit der Overlay-Text hinausstehen darf */
+  display: flex;
+  align-items: center;
+  gap: 12px;           /* nur für das Bild, der Text ist absolut */
+}
+
+/* Basis-Stil für den Overlay-Text */
+.hover-text{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* vertikal mittig am Bild */
+  max-width: clamp(280px, 36vw, 600px);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  /* sanftes Einblenden */
+  opacity: 0;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+/* Die Karte ist Anker für Overlay + Hintergrundpanel */
+.card{ position:relative; border-radius:20px; overflow:visible; }
+
+/* Erweiterter Hintergrund, klappt seitlich aus */
+.card.with-panel::after{
+  content:"";
+  position:absolute;
+  top:0; bottom:0;
+  border-radius:20px;
+  z-index:0;                 /* unter dem Text */
+}
+
+/* LINKS-Spalte: Panel erweitert sich nach rechts */
+.left .card.with-panel::after{
+  left:0;
+  width:calc(100% + var(--panel-w, 0px));
+  background:linear-gradient(to right, var(--c1), var(--c2));
+}
+
+/* RECHTS-Spalte: Panel erweitert sich nach links */
+.right .card.with-panel::after{
+  left:calc(-1 * var(--panel-w, 0px));
+  width:calc(100% + var(--panel-w, 0px));
+  background:linear-gradient(to left, var(--c1), var(--c2));
+}
+
+/* Bild+Text-Zeile */
+.media-row{ position:relative; display:flex; align-items:center; gap:12px; }
+
+/* Overlay-Text: absolut, nimmt keinen Layout-Platz, sitzt ÜBER dem Panel */
+.hover-text{
+  position:absolute;
+  z-index:1;                 /* über ::after */
+  top:50%;
+  transform:translateY(-50%);
+  width:clamp(280px, 36vw, 600px); /* echte Breite -> nicht schmal */
+  font-size:0.95rem;
+  line-height:1.45;
+  opacity:0;
+  transition:opacity .25s ease, transform .25s ease;
+}
+
+/* Card als Stacking-Context + Panel dahinter */
+.card{
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(to right, var(--c1), var(--c2));
+  padding: 0.6rem 0.8rem;
+  border-radius: 20px;
+  isolation: isolate; /* eigener Stacking-Context -> z-index sauber */
+}
+.right .project .card{
+  background: linear-gradient(to left, var(--c1), var(--c2));
+}
+
+/* Panel hinter allem (wirklich hinten) */
+.card.with-panel::after{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;       /* Basiswerte; Seite wird per .left/.right justiert */
+  border-radius:20px;
+  z-index:-1;             /* <— WICHTIG: hinter Bild & Text */
+}
+.left  .card.with-panel::after{
+  left:0;
+  width: calc(100% + var(--panel-w, 0px));
+  background: linear-gradient(to right, var(--c1), var(--c2));
+}
+.right .card.with-panel::after{
+  left: calc(-1 * var(--panel-w, 0px));
+  width: calc(100% + var(--panel-w, 0px));
+  background: linear-gradient(to left, var(--c1), var(--c2));
+}
+
+/* Zeile mit Bild (Referenzpunkt) */
+.media-row{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: visible;
+}
+
+/* Overlay-Text obenauf, breite Spalte */
+.hover-text{
+  position: absolute;
+  z-index: 2;                          /* über Panel & Bild */
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(280px, 36vw, 600px);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  opacity: 0;
+  transition: opacity .25s ease, transform .25s ease;
+}
+.hover-title{
+  margin: 0 0 .35rem 0;
+  font-weight: 700;
+}
+.hover-body{
+  margin: 0;
+}
+
+.left {
+  margin-top: 80px;
+}
+
+.card {
+
+flex: 1;
+align-items: flex-start;
+gap: 20px;
+
+}
+
+.text1 {
+  flex: 0 0 300px;
+  
+}
+
+.color {
+   display: flex;
+  justify-content: center;   
+  align-items: center;       
+  gap: 30px;                 
+  margin-top: 20px; 
+}
+
+.extern {
+  width: 30px;     
+  height: 30px;    
+  background: rgb(212, 67, 42);
+  display: inline-block; 
+  border-radius: 4px; 
+}
+
+.intern {
+  width: 30px;      
+  height: 30px;     
+  background: rgb(46, 181, 68);
+  display: inline-block; 
+  border-radius: 4px; 
+}
+
+.animation {
+ width: 30px;      
+  height: 30px;     
+  background: rgb(133, 82, 19);
+  display: inline-block; 
+  border-radius: 4px; 
+}
+
+.video {
+   width: 30px;      
+  height: 30px;     
+  background: rgb(91, 91, 193);
+  display: inline-block; 
+  border-radius: 4px; 
+}
+
+.programming {
+   width: 30px;      
+  height: 30px;     
+  background: rgb(31, 118, 120);
+  display: inline-block; 
+  border-radius: 4px; 
+}
+
+.color {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;   /* Kästchen + Text mittig ausrichten */
+  gap: 8px;              /* Abstand zwischen Kästchen und Text */
+
+}
