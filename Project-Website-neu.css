@@ -21,6 +21,8 @@ body{
   margin-top:1rem; background:#e8e4de; border-radius:20px; padding:clamp(20px,2vw,200px); 
 }
 
+
+
 /* Layout: links | timeline | rechts */
 .layout{
   --gap: clamp(20px, 5vw, 120px);
@@ -321,4 +323,11 @@ gap: 20px;
   align-items: center;   /* Kästchen + Text mittig ausrichten */
   gap: 8px;              /* Abstand zwischen Kästchen und Text */
 
+}
+
+
+.name {
+  text-align: center;
+  font-size:clamp(1.8rem,3vw,5rem); font-weight:700;
+  
 }
